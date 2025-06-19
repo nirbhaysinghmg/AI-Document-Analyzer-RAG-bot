@@ -1,0 +1,2 @@
+To tackle the problem of page not showing instead of storing the docs in str i have created a list
+Created a page text and para text array to store them 

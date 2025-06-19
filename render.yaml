@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: chatbot-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+      - key: PORT
+        value: 8008
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: EMBED_MODEL
+        value: models/embedding-001
+      - key: LLM_MODEL
+        value: gemini-2.0-flash
+      - key: PERSIST_DIRECTORY
+        value: chroma_db
+    plan: free
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
