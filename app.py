@@ -108,6 +108,7 @@ def get_vector_store(session_id=None):
 llm = ChatGoogleGenerativeAI(
     model=os.getenv("LLM_MODEL", "gemini-2.0-flash"),
     google_api_key=os.getenv("GEMINI_API_KEY"),
+    temperature=0.7,
     disable_streaming=True
 )
 
@@ -237,7 +238,7 @@ async def query_qa(req: QueryRequest):
             llm=llm,
             retriever=retriever,
             return_source_documents=True,
-            combine_docs_chain_kwargs={"prompt": System},
+            combine_docs_chain_kwargs={"prompt": THEME_ANALYSIS_PROMPT},
             verbose=True
         )
         
@@ -526,7 +527,7 @@ async def websocket_endpoint(websocket: WebSocket):
                         llm=llm,
                         retriever=retriever,
                         return_source_documents=True,
-                        combine_docs_chain_kwargs={"prompt": System},
+                        combine_docs_chain_kwargs={"prompt": THEME_ANALYSIS_PROMPT},
                         verbose=True
                     )
                     
