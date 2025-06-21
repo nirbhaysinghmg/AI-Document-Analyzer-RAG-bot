@@ -2,19 +2,27 @@ FROM python:3.12.4-slim-bullseye
 
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    tesseract-ocr \
-    libtesseract-dev \
-    libleptonica-dev \
-    poppler-utils \
-    && rm -rf /var/lib/apt/lists/*
+# Install system dependencies + updated SQLite
+RUN apt-get update && \
+    apt-get install -y \
+        build-essential \
+        libpq-dev \
+        tesseract-ocr \
+        libtesseract-dev \
+        libleptonica-dev \
+        poppler-utils \
+        wget && \
+    # Add testing repo for newer SQLite
+    echo "deb http://deb.debian.org/debian testing main" > /etc/apt/sources.list.d/testing.list && \
+    apt-get update && \
+    # Install SQLite from testing - CORRECTED COMMAND
+    apt-get install -y -t testing sqlite3 && \
+    # Cleanup
+    rm -rf /var/lib/apt/lists/* \
+        /etc/apt/sources.list.d/testing.list
 
-# Set pip environment variables
-ENV PIP_NO_CACHE_DIR=off \
-    PIP_DISABLE_PIP_VERSION_CHECK=on
+# Verify SQLite version (optional)
+RUN sqlite3 --version
 
 COPY requirements.txt .
 
