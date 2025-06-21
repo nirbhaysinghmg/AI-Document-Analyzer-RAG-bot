@@ -11,7 +11,8 @@ RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     libtesseract-dev \
     libleptonica-dev \
-    poppler-utils \  # Required for PDF processing
+    # Required for PDF processing
+    poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for better dependency resolution
