@@ -2,22 +2,32 @@ pip==24.0
 setuptools==69.2.0
 wheel==0.43.0
 
+# Core dependencies
 fastapi==0.104.1
 uvicorn==0.24.0
 python-dotenv==1.0.0
-langchain==0.1.0
-langchain-core==0.1.7
-langchain-google-genai==0.0.11  # Changed to existing version
-langchain-chroma==0.1.0
-chromadb==0.4.22
+
+# LangChain ecosystem (compatible versions)
+langchain==0.3.0
+langchain-core==0.3.0
+langchain-google-genai==0.3.0  # Explicitly supports google-generativeai>=0.5.0
+chromadb==0.4.22  # Compatible with langchain 0.3.x
+
+# Google AI (works with langchain-google-genai 0.3.0)
 google-generativeai==0.8.0
+
+# Document processing
 python-multipart==0.0.6
 PyPDF2==3.0.1
 python-docx==1.0.1
 pytesseract==0.3.10
-Pillow==10.1.0
+Pillow==10.1.0  # Pillow version compatible with pytesseract
+
+# Database
 mysql-connector-python==8.2.0
+
+# Other utilities
 websockets==12.0
 groq==0.4.2
 httpx==0.25.2
-pydantic==2.5.0
+pydantic==2.5.0  # Required by newer LangChain versions
