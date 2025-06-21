@@ -20,7 +20,6 @@ RUN pip install --upgrade pip setuptools wheel && \
 
 # Copy application files
 COPY app.py .
-COPY .env .
 
 # Create directory for ChromaDB
 RUN mkdir -p chroma_db
