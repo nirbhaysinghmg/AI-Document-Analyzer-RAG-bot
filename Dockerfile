@@ -11,26 +11,24 @@ RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     libtesseract-dev \
     libleptonica-dev \
-    # Required for PDF processing
     poppler-utils \
     && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for better dependency resolution
 ENV PIP_NO_CACHE_DIR=off \
-    PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_RESOLVER=backtracking
+    PIP_DISABLE_PIP_VERSION_CHECK=on
 
 # Copy requirements first for better caching
 COPY requirements.txt .
 
-# Upgrade pip and install Python dependencies in two stages
-RUN pip install --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir \
+# Upgrade pip and install Python dependencies in stages
+RUN pip install --upgrade pip setuptools wheel
+RUN pip install --no-cache-dir \
     googleapis-common-protos \
     google-api-core \
     google-ai-generativelanguage \
-    grpcio-status && \
-    pip install --no-cache-dir -r requirements.txt
+    grpcio-status
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY . .

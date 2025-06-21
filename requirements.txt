@@ -2,39 +2,22 @@ pip==24.0
 setuptools==69.2.0
 wheel==0.43.0
 
-# Core web framework
 fastapi==0.104.1
 uvicorn==0.24.0
-python-multipart==0.0.6
-websockets==12.0
-
-# Environment
 python-dotenv==1.0.0
-
-# AI/ML dependencies
 langchain==0.1.0
-langchain-core==0.1.7  # Must be >=0.1.7 for langchain 0.1.0
-langchain-google-genai==0.0.14
+langchain-core==0.1.7
+langchain-google-genai==0.0.11  # Changed to existing version
 langchain-chroma==0.1.0
-chromadb==0.4.22  # Updated to newer version
+chromadb==0.4.22
 google-generativeai==0.8.0
-
-# Document processing
+python-multipart==0.0.6
 PyPDF2==3.0.1
 python-docx==1.0.1
 pytesseract==0.3.10
-Pillow==10.1.0  # Required by pytesseract
-
-# Database
+Pillow==10.1.0
 mysql-connector-python==8.2.0
-
-# Additional utilities
+websockets==12.0
 groq==0.4.2
 httpx==0.25.2
 pydantic==2.5.0
-
-# Google API dependencies (will be installed separately)
-googleapis-common-protos
-google-api-core
-google-ai-generativelanguage
-grpcio-status
