@@ -2,7 +2,7 @@ FROM python:3.12.4-slim-bullseye
 
 WORKDIR /app
 
-# Install system dependencies + updated SQLite
+# Install system dependencies
 RUN apt-get update && \
     apt-get install -y \
         build-essential \
@@ -11,22 +11,27 @@ RUN apt-get update && \
         libtesseract-dev \
         libleptonica-dev \
         poppler-utils \
-        wget && \
-    # Add testing repo for newer SQLite
-    echo "deb http://deb.debian.org/debian testing main" > /etc/apt/sources.list.d/testing.list && \
-    apt-get update && \
-    # Install SQLite from testing - CORRECTED COMMAND
-    apt-get install -y -t testing sqlite3 && \
-    # Cleanup
-    rm -rf /var/lib/apt/lists/* \
-        /etc/apt/sources.list.d/testing.list
+        wget \
+        tcl-dev \
+        tk-dev \
+        && rm -rf /var/lib/apt/lists/*
 
-# Verify SQLite version (optional)
+# Install latest SQLite from source
+RUN wget https://www.sqlite.org/2024/sqlite-autoconf-3450200.tar.gz && \
+    tar xvfz sqlite-autoconf-3450200.tar.gz && \
+    cd sqlite-autoconf-3450200 && \
+    ./configure --prefix=/usr/local && \
+    make && \
+    make install && \
+    cd .. && \
+    rm -rf sqlite-autoconf-3450200*
+
+# Verify SQLite version
 RUN sqlite3 --version
 
 COPY requirements.txt .
 
-# Install dependencies in optimal order
+# Install dependencies
 RUN pip install --upgrade pip setuptools wheel
 RUN pip install --no-cache-dir \
     googleapis-common-protos \
