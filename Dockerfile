@@ -1,23 +1,5 @@
-# Stage 1: Frontend Build
-FROM node:18-alpine as frontend-build
-
-# Set working directory
-WORKDIR /app/frontend
-
-# Copy frontend package files
-COPY frontend/package*.json ./
-
-# Install frontend dependencies
-RUN npm install
-
-# Copy frontend source code
-COPY frontend/ ./
-
-# Build frontend
-RUN npm run build
-
-# Stage 2: Backend Build
-FROM python:3.9-slim
+# Use Python 3.11 slim image
+FROM python:3.11-slim
 
 # Set working directory
 WORKDIR /app
@@ -29,18 +11,16 @@ RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy backend requirements
+# Copy requirements first for better caching
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Upgrade pip and install Python dependencies
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Copy backend source code
+# Copy application files
 COPY app.py .
 COPY .env .
-
-# Copy built frontend files from previous stage
-COPY --from=frontend-build /app/frontend/dist /app/static
 
 # Create directory for ChromaDB
 RUN mkdir -p chroma_db
