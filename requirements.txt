@@ -1,8 +1,12 @@
+pip==24.0
+setuptools==69.2.0
+wheel==0.43.0
+
 fastapi==0.104.1
 uvicorn==0.24.0
 python-dotenv==1.0.0
-langchain>=0.3,<0.4
-langchain-core>=0.3,<0.4
+langchain==0.3.0
+langchain-core==0.3.0
 langchain-google-genai>=2.0,<3.0
 langchain-chroma>=0.1,<0.2
 chromadb>=0.4.18
