@@ -26,13 +26,21 @@ RUN wget https://www.sqlite.org/2024/sqlite-autoconf-3450200.tar.gz && \
     cd .. && \
     rm -rf sqlite-autoconf-3450200*
 
+# Set environment variables to use the new sqlite3
+ENV LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+ENV PATH=/usr/local/bin:$PATH
+
+# Rebuild Python's sqlite3 module with the new sqlite3
+RUN python -m pip install --upgrade pip setuptools wheel && \
+    python -c "import sqlite3; print('SQLite version:', sqlite3.sqlite_version)" && \
+    python -m pip install --force-reinstall --no-cache-dir pysqlite3-binary
+
 # Verify SQLite version
 RUN sqlite3 --version
 
 COPY requirements.txt .
 
 # Install dependencies
-RUN pip install --upgrade pip setuptools wheel
 RUN pip install --no-cache-dir \
     googleapis-common-protos \
     google-api-core \
